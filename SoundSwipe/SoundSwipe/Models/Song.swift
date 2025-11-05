@@ -8,4 +8,8 @@
 import Foundation
 
 struct Song {
+    let id = UUID()
+    var name: String
+    var artist: String
+    var album: String
 }
