@@ -6,7 +6,7 @@
 //
 
 struct MyItem: Identifiable {
-    let id = UUID() // Use a UUID for a globally unique identifier
+    let id = UUID()
     var name: String
     var description: String
 }
