@@ -7,10 +7,14 @@
 
 import Foundation
 
-class User : Identifiable {
+struct User : Identifiable {
   
   let id : UUID;
   let username : String;
   let email : String;
+  
+  let likedSongs : [Song];
+  let playlists : [Playlist];
+  let friends : [User];
   
 }

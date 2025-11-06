@@ -45,6 +45,11 @@
 			path = SoundSwipeUITests;
 			sourceTree = "<group>";
 		};
+		43E81A3A2EBC20730091FD15 /* Assets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Assets;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +80,7 @@
 		43E814D92EB2D9E80091FD15 = {
 			isa = PBXGroup;
 			children = (
+				43E81A3A2EBC20730091FD15 /* Assets */,
 				43E814E42EB2D9E80091FD15 /* SoundSwipe */,
 				43E814F52EB2D9EA0091FD15 /* SoundSwipeTests */,
 				43E814FF2EB2D9EA0091FD15 /* SoundSwipeUITests */,
@@ -109,6 +115,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				43E814E42EB2D9E80091FD15 /* SoundSwipe */,
+				43E81A3A2EBC20730091FD15 /* Assets */,
 			);
 			name = SoundSwipe;
 			packageProductDependencies = (
