@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SpotifyiOS
 
 struct ContentView: View {
     var body: some View {
