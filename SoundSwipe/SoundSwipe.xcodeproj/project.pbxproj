@@ -33,9 +33,22 @@
 		43E814FC2EB2D9EA0091FD15 /* SoundSwipeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoundSwipeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		43AFF86A2EC5282A0000FBE6 /* Exceptions for "SoundSwipe" folder in "SoundSwipe" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 43E814E12EB2D9E80091FD15 /* SoundSwipe */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		43E814E42EB2D9E80091FD15 /* SoundSwipe */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				43AFF86A2EC5282A0000FBE6 /* Exceptions for "SoundSwipe" folder in "SoundSwipe" target */,
+			);
 			path = SoundSwipe;
 			sourceTree = "<group>";
 		};
@@ -407,6 +420,7 @@
 				DEVELOPMENT_ASSET_PATHS = "SoundSwipe/Preview\\ Content SoundSwipe/Assets/Rokkitt";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SoundSwipe/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -435,6 +449,7 @@
 				DEVELOPMENT_ASSET_PATHS = "SoundSwipe/Preview\\ Content SoundSwipe/Assets/Rokkitt";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SoundSwipe/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

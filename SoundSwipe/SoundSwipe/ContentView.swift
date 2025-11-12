@@ -6,17 +6,26 @@
 //
 
 import SwiftUI
-import SpotifyiOS
 
 struct ContentView: View {
+    @StateObject private var authManager = SpotifyAuthManager.shared
+    @State private var showLoginSheet = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            if authManager.isAuthenticated {
+                // Show main app with tab navigation
+                MainTabView()
+            } else {
+                // Show login view
+                SpotifyLoginView()
+            }
         }
-        .padding()
+        .onChange(of: authManager.isAuthenticated) { newValue in
+            if newValue {
+                print("✅ User authenticated, showing main app")
+            }
+        }
     }
 }
 
