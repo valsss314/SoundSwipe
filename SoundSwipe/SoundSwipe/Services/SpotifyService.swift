@@ -266,7 +266,7 @@ class SpotifyService: ObservableObject {
 
         guard httpResponse.statusCode == 200 else {
             if let errorString = String(data: data, encoding: .utf8) {
-                print("❌ Genre Seeds Error Response: \(errorString)")
+                print(" Genre Seeds Error Response: \(errorString)")
             }
             throw SpotifyError.requestFailed(statusCode: httpResponse.statusCode)
         }
@@ -291,11 +291,11 @@ class SpotifyService: ObservableObject {
                 print("🔍 Searching with query: \(query)")
                 let tracks = try await searchTracks(query: query, limit: limit)
                 if !tracks.isEmpty {
-                    print("✅ Found \(tracks.count) tracks")
+                    print(" Found \(tracks.count) tracks")
                     return tracks
                 }
             } catch {
-                print("⚠️ Search failed for query '\(query)': \(error)")
+                print(" Search failed for query '\(query)': \(error)")
                 continue
             }
         }
@@ -308,14 +308,14 @@ class SpotifyService: ObservableObject {
         var allTracks: [SpotifyTrack] = []
         let tracksPerGenre = max(1, limit / genres.count)
 
-        print("🎵 Getting tracks for genres: \(genres.joined(separator: ", "))")
+        print(" Getting tracks for genres: \(genres.joined(separator: ", "))")
 
         for genre in genres {
             do {
                 let tracks = try await getPopularTracksByGenre(genre: genre, limit: tracksPerGenre)
                 allTracks.append(contentsOf: tracks)
             } catch {
-                print("⚠️ Failed to get tracks for genre '\(genre)': \(error)")
+                print(" Failed to get tracks for genre '\(genre)': \(error)")
             }
         }
 
@@ -344,7 +344,7 @@ class SpotifyService: ObservableObject {
 
         guard httpResponse.statusCode == 200 else {
             if let errorString = String(data: data, encoding: .utf8) {
-                print("❌ Top Tracks Error: \(errorString)")
+                print(" Top Tracks Error: \(errorString)")
             }
             throw SpotifyError.requestFailed(statusCode: httpResponse.statusCode)
         }
@@ -377,7 +377,7 @@ class SpotifyService: ObservableObject {
 
         guard httpResponse.statusCode == 200 else {
             if let errorString = String(data: data, encoding: .utf8) {
-                print("❌ Top Artists Error: \(errorString)")
+                print(" Top Artists Error: \(errorString)")
             }
             throw SpotifyError.requestFailed(statusCode: httpResponse.statusCode)
         }
@@ -425,7 +425,9 @@ extension SpotifyTrack {
             album: self.album.name,
             albumArtworkURL: self.album.images.first?.url,
             spotifyURL: self.external_urls.spotify,
-            previewURL: self.preview_url
+            spotifyURI: "spotify:track:\(self.id)", 
+            previewURL: self.preview_url,
+            durationMS: self.duration_ms
         )
     }
 }

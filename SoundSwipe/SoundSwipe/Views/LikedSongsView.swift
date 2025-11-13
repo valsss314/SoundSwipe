@@ -160,9 +160,9 @@ struct LikedSongsView: View {
         let songsList = viewModel.likedSongs.map { "\($0.name) by \($0.artist)" }.joined(separator: "\n")
         UIPasteboard.general.string = songsList
 
-        exportMessage = "✅ Copied \(viewModel.likedSongs.count) songs to clipboard"
+        exportMessage = " Copied \(viewModel.likedSongs.count) songs to clipboard"
         showExportAlert = true
-        print("✅ Copied \(viewModel.likedSongs.count) songs to clipboard")
+        print(" Copied \(viewModel.likedSongs.count) songs to clipboard")
     }
 
     private func exportToSpotifyPlaylist() async {
@@ -182,7 +182,7 @@ struct LikedSongsView: View {
                 .compactMap { $0 }
 
             guard !trackUris.isEmpty else {
-                exportMessage = "❌ No Spotify tracks found to export"
+                exportMessage = " No Spotify tracks found to export"
                 showExportAlert = true
                 isExporting = false
                 return
@@ -196,15 +196,15 @@ struct LikedSongsView: View {
                 // Add tracks to playlist
                 try await addTracksToPlaylist(playlistId: playlistId, trackUris: trackUris)
 
-                exportMessage = "✅ Successfully exported \(trackUris.count) songs to Spotify playlist '\(playlistName)'"
+                exportMessage = " Successfully exported \(trackUris.count) songs to Spotify playlist '\(playlistName)'"
                 showExportAlert = true
-                print("✅ Exported to Spotify playlist: \(playlistId)")
+                print(" Exported to Spotify playlist: \(playlistId)")
             }
 
         } catch {
-            exportMessage = "❌ Failed to export: \(error.localizedDescription)"
+            exportMessage = " Failed to export: \(error.localizedDescription)"
             showExportAlert = true
-            print("❌ Export error: \(error)")
+            print(" Export error: \(error)")
         }
 
         isExporting = false
@@ -275,7 +275,7 @@ struct LikedSongsView: View {
             let (_, response) = try await URLSession.shared.data(for: request)
 
             if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 201 {
-                print("⚠️ Failed to add batch to playlist: \(httpResponse.statusCode)")
+                print(" Failed to add batch to playlist: \(httpResponse.statusCode)")
             }
         }
     }

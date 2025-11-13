@@ -10,15 +10,16 @@ import SwiftUI
 struct SwipeableCardStackView: View {
     @ObservedObject var viewModel: SongViewModel
     @StateObject private var authManager = SpotifyAuthManager.shared
+    @StateObject private var audioManager = AudioPlayerManager.shared
     @State private var showNextCard = false
     @State private var showTestView = false
     @State private var showFilterView = false
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            backgroundWithFades
 
-            VStack {
+            VStack (alignment: .center){
                 header
 
                 Spacer()
@@ -38,6 +39,79 @@ struct SwipeableCardStackView: View {
         }
     }
 
+    // MARK: - Dynamic background
+
+    private var backgroundWithFades: some View {
+            ZStack {
+                dynamicBackground
+            }
+            .ignoresSafeArea()  // <- make the base fill the whole screen
+            .overlay(
+                // TOP fade
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(1),
+                        Color.black.opacity(0.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .center
+                )
+                .ignoresSafeArea(edges: .top)      // <- push into the top corners
+            )
+            .overlay(
+                // BOTTOM fade
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.0),
+                        Color.black.opacity(1)
+                    ],
+                    startPoint: .center,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea(edges: .bottom)   // <- push into the bottom corners
+            )
+        }
+    
+    private var dynamicBackground: some View {
+        Group {
+            if let song = viewModel.currentSong,
+               let urlString = song.albumArtworkURL,
+               let url = URL(string: urlString) {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        fallbackBackground
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .blur(radius: 40)
+                            .overlay(Color.black.opacity(0.35))
+                    case .failure:
+                        fallbackBackground
+                    @unknown default:
+                        fallbackBackground
+                    }
+                }
+            } else {
+                fallbackBackground
+            }
+        }
+    }
+
+    private var fallbackBackground: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [
+                Color.black,
+                Color(red: 0.05, green: 0.07, blue: 0.10),
+                Color(red: 0.08, green: 0.15, blue: 0.08)
+            ]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+
+    
     // MARK: - Header
     private var header: some View {
         VStack(spacing: 10) {
@@ -58,8 +132,9 @@ struct SwipeableCardStackView: View {
                         .foregroundColor(.green)
                     }
                 }
-
-                Spacer()
+                .layoutPriority(1)
+                
+                Spacer().frame(maxWidth: 85)
 
                 // Filter Button
                 Button(action: {
@@ -110,16 +185,6 @@ struct SwipeableCardStackView: View {
     // MARK: - Card Stack
     private var cardStack: some View {
         ZStack {
-            if viewModel.currentIndex + 1 < viewModel.songs.count {
-                let nextSong = viewModel.songs[viewModel.currentIndex + 1]
-                SwipeableSongCardView(
-                    song: nextSong,
-                    onSwipe: { _ in }
-                )
-                .scaleEffect(0.9)
-                .opacity(0.5)
-            }
-
             // Current card
             if let currentSong = viewModel.currentSong {
                 SwipeableSongCardView(
@@ -128,7 +193,7 @@ struct SwipeableCardStackView: View {
                         withAnimation(.spring(response: 0.3)) {
                             viewModel.handleSwipe(direction: direction)
                         }
-                    }
+                    }, audioManager: audioManager
                 )
                 .transition(.asymmetric(
                     insertion: .scale.combined(with: .opacity),

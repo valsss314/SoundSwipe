@@ -472,7 +472,7 @@ struct SpotifyTestView: View {
                 await addResult(TestResult(
                     name: "Top Artists",
                     status: .failure,
-                    message: "❌ EXPECTED: Requires user login (Status: \(httpResponse.statusCode))",
+                    message: " EXPECTED: Requires user login (Status: \(httpResponse.statusCode))",
                     details: "This endpoint needs Authorization Code Flow, not Client Credentials. Error: \(errorString)"
                 ))
             }
