@@ -91,7 +91,7 @@ struct SpotifyLoginView: View {
 
     private func testAuthURL() {
         print("\n" + String(repeating: "=", count: 80))
-        print("🧪 TESTING SPOTIFY AUTHORIZATION")
+        print("STING SPOTIFY AUTHORIZATION")
         print(String(repeating: "=", count: 80))
 
         // Print configuration
@@ -99,11 +99,11 @@ struct SpotifyLoginView: View {
 
         // First test - can we open a simple Spotify URL?
         let simpleURL = URL(string: "https://accounts.spotify.com")!
-        print("\n🧪 Test 1: Opening simple Spotify URL...")
+        print("\n Test 1: Opening simple Spotify URL...")
         print("   URL: \(simpleURL)")
 
         UIApplication.shared.open(simpleURL) { success in
-            print(success ? "    Simple URL works!" : "   ❌ Simple URL failed - Safari may be restricted")
+            print(success ? "    Simple URL works!" : "    Simple URL failed - Safari may be restricted")
         }
 
         // Now test our auth URL
@@ -121,19 +121,19 @@ struct SpotifyLoginView: View {
             // Parse query items
             if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
                let queryItems = components.queryItems {
-                print("\n📝 Query Parameters:")
+                print("\n Query Parameters:")
                 for item in queryItems {
                     let value = item.value ?? "nil"
                     print("   \(item.name): \(value.prefix(50))\(value.count > 50 ? "..." : "")")
                 }
-                print("   ✅ URL components are valid")
+                print("    URL components are valid")
             } else {
-                print("   ❌ URL components are invalid!")
+                print("    URL components are invalid!")
             }
 
             // Copy to clipboard
             UIPasteboard.general.string = url.absoluteString
-            print("\n✅ URL copied to clipboard")
+            print("\n URL copied to clipboard")
 
             print(String(repeating: "=", count: 80) + "\n")
 
@@ -141,13 +141,13 @@ struct SpotifyLoginView: View {
             showError = true
 
             // Try to open it
-            print("🚀 Attempting to open URL in Safari...")
+            print(" Attempting to open URL in Safari...")
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 UIApplication.shared.open(url) { success in
                     if success {
-                        print("✅ Successfully opened URL in Safari")
+                        print(" Successfully opened URL in Safari")
                     } else {
-                        print("❌ Failed to open URL in Safari")
+                        print(" Failed to open URL in Safari")
                         print("   This could mean:")
                         print("   - URL is malformed")
                         print("   - Safari is restricted")
@@ -156,7 +156,7 @@ struct SpotifyLoginView: View {
                 }
             }
         } else {
-            print("   ❌ Failed to generate URL")
+            print("    Failed to generate URL")
             print(String(repeating: "=", count: 80) + "\n")
             errorMessage = "Failed to generate authorization URL"
             showError = true
@@ -165,7 +165,7 @@ struct SpotifyLoginView: View {
 
     private func login() {
         guard let authURL = authManager.getAuthorizationURL() else {
-            print("❌ Failed to generate authorization URL")
+            print(" Failed to generate authorization URL")
             errorMessage = "Failed to generate login URL. Please check your internet connection and try again."
             showError = true
             return
@@ -175,7 +175,7 @@ struct SpotifyLoginView: View {
 
         // Verify URL is valid
         guard authURL.absoluteString.hasPrefix("https://accounts.spotify.com/authorize") else {
-            print("❌ Invalid authorization URL: \(authURL.absoluteString)")
+            print(" Invalid authorization URL: \(authURL.absoluteString)")
             errorMessage = "Invalid login URL generated. Please contact support."
             showError = true
             return
@@ -183,7 +183,7 @@ struct SpotifyLoginView: View {
 
         UIApplication.shared.open(authURL) { success in
             if !success {
-                print("❌ Failed to open URL in Safari")
+                print(" Failed to open URL in Safari")
                 errorMessage = "Could not open Safari. Please make sure Safari is available."
                 showError = true
             }
