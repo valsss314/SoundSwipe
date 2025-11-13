@@ -29,7 +29,6 @@ struct SpotifyLoginView: View {
             VStack(spacing: 40) {
                 Spacer()
 
-                // Spotify Logo
                 Image(systemName: "music.note.list")
                     .font(.system(size: 100))
                     .foregroundColor(.white)
@@ -71,31 +70,14 @@ struct SpotifyLoginView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .background(
-                            Color(red: 0.11, green: 0.73, blue: 0.33) // Spotify green
+                            Color(red: 0.11, green: 0.73, blue: 0.33)
                         )
                         .cornerRadius(30)
                         .shadow(color: Color.black.opacity(0.3), radius: 10, x: 0, y: 5)
                     }
                     .padding(.horizontal, 40)
 
-                    // Test URL Button (debug)
-                    Button(action: {
-                        testAuthURL()
-                    }) {
-                        Text("Test Auth URL")
-                            .font(.custom("Rokkitt-Regular", size: 14))
-                            .foregroundColor(.white.opacity(0.5))
-                    }
-
-                    // Continue without login
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Text("Continue without login")
-                            .font(.custom("Rokkitt-Regular", size: 16))
-                            .foregroundColor(.white.opacity(0.7))
-                            .underline()
-                    }
+                
                 }
                 .padding(.bottom, 50)
             }
