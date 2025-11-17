@@ -88,7 +88,9 @@ struct LikedSongsView: View {
                         .padding(.vertical)
                     }
                 }
-            }
+            }.background(
+                backgroundWithFades
+            )
         }
         .alert("Export to Spotify", isPresented: $showExportOptions) {
             Button("Create New Playlist") {
@@ -103,6 +105,76 @@ struct LikedSongsView: View {
         .alert(exportMessage, isPresented: $showExportAlert) {
             Button("OK", role: .cancel) {}
         }
+    }
+    
+    private var backgroundWithFades: some View {
+            ZStack {
+                dynamicBackground
+            }
+            .ignoresSafeArea()  // <- make the base fill the whole screen
+            .overlay(
+                // TOP fade
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(1),
+                        Color.black.opacity(0.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .center
+                )
+                .ignoresSafeArea(edges: .top)      // <- push into the top corners
+            )
+            .overlay(
+                // BOTTOM fade
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.0),
+                        Color.black.opacity(1)
+                    ],
+                    startPoint: .center,
+                    endPoint: .bottom
+                )
+                .ignoresSafeArea(edges: .bottom)   // <- push into the bottom corners
+            )
+        }
+    
+    private var dynamicBackground: some View {
+        Group {
+            if let song = viewModel.currentSong,
+               let urlString = song.albumArtworkURL,
+               let url = URL(string: urlString) {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        fallbackBackground
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                            .blur(radius: 40)
+                            .overlay(Color.black.opacity(0.35))
+                    case .failure:
+                        fallbackBackground
+                    @unknown default:
+                        fallbackBackground
+                    }
+                }
+            } else {
+                fallbackBackground
+            }
+        }
+    }
+
+    private var fallbackBackground: some View {
+        LinearGradient(
+            gradient: Gradient(colors: [
+                Color.black,
+                Color(red: 0.05, green: 0.07, blue: 0.10),
+                Color(red: 0.08, green: 0.15, blue: 0.08)
+            ]),
+            startPoint: .top,
+            endPoint: .bottom
+        )
     }
 
     // MARK: - Search Bar
