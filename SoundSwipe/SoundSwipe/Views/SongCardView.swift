@@ -73,18 +73,7 @@ struct SongCardView: View {
     var body: some View {
         ZStack {
             // Card background with gradient
-            RoundedRectangle(cornerRadius: 14)
-                .fill(
-                    LinearGradient(
-                        gradient: Gradient(colors: [
-                            Color(.systemGray6),
-                            Color(.systemGray5)
-                        ]),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
-                .shadow(color: Color.black.opacity(0.15), radius: 4, x: 0, y: 2)
+            GlassCardBackground(cornerRadius: 18)
 
             HStack(spacing: 12) {
                 // Album artwork
@@ -124,7 +113,7 @@ struct SongCardView: View {
                     ScrollingText(
                         text: song.name,
                         font: .custom("Rokkitt-Regular", size: 17).weight(.semibold),
-                        color: .primary
+                        color: .white
                     )
                     .frame(height: 20)
 
@@ -133,31 +122,72 @@ struct SongCardView: View {
                         ScrollingText(
                             text: song.artist,
                             font: .custom("Rokkitt-Regular", size: 14),
-                            color: .secondary
+                            color: .gray
                         )
                         .frame(height: 16)
 
                         ScrollingText(
                             text: song.album,
                             font: .custom("Rokkitt-Regular", size: 12),
-                            color: .secondary.opacity(0.8)
+                            color: .gray.opacity(0.8)
                         )
                         .frame(height: 14)
                     }
 
                     Spacer()
                 }
-                .padding(.vertical, 4)
+                
 
                 Spacer()
             }
-            .padding(12)
+            .padding(15)
         }
         .frame(height: 90)
         .padding(.horizontal, 6)
         .padding(.vertical, 4)
     }
 }
+
+struct GlassCardBackground: View {
+    var cornerRadius: CGFloat = 30
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            // main dark, slightly see-through fill
+            .fill(
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.85),
+                        Color.black.opacity(0.65)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            // frosty blur from whatever is behind
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            // glossy outline
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                    .strokeBorder(
+                        LinearGradient(
+                            colors: [
+                                Color.white.opacity(0.40),
+                                Color.white.opacity(0.05)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 1.25
+                    )
+                    .blendMode(.screen)
+            )
+            // soft drop shadow
+            .shadow(color: Color.black.opacity(0.7), radius: 24, x: 0, y: 12)
+    }
+}
+
 
 #Preview {
     VStack(spacing: 16) {

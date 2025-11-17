@@ -230,7 +230,7 @@ struct ProfileView: View {
 
                                 Text(song.artist)
                                     .font(.custom("Rokkitt-Regular", size: 12))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(.white).opacity(0.50)
                                     .lineLimit(1)
                             }
 
@@ -287,7 +287,7 @@ struct ProfileView: View {
 
                                 Text(track.artists.first?.name ?? "Unknown")
                                     .font(.custom("Rokkitt-Regular", size: 12))
-                                    .foregroundColor(.secondary)
+                                    .foregroundColor(.white).opacity(0.50)
                                     .lineLimit(1)
                             }
 
@@ -325,7 +325,7 @@ struct ProfileView: View {
                                 if !artist.genres.isEmpty {
                                     Text(artist.genres.prefix(2).joined(separator: ", "))
                                         .font(.custom("Rokkitt-Regular", size: 12))
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(.white).opacity(0.50)
                                         .lineLimit(1)
                                 }
                             }
@@ -342,7 +342,7 @@ struct ProfileView: View {
             if topTracks.isEmpty && topArtists.isEmpty && !isLoadingStats {
                 Text("No Spotify stats available yet. Keep listening!")
                     .font(.custom("Rokkitt-Regular", size: 14))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.white).opacity(0.50)
                     .padding()
             }
         }
@@ -479,7 +479,7 @@ struct StatCard: View {
 
             Text(title)
                 .font(.custom("Rokkitt-Regular", size: 14))
-                .foregroundColor(.secondary)
+                .foregroundColor(.white).opacity(0.75)
         }
         .frame(maxWidth: .infinity)
         .padding()

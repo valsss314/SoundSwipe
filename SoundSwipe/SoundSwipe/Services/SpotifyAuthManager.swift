@@ -20,8 +20,8 @@ class SpotifyAuthManager: ObservableObject {
     private var refreshToken: String?
     private var tokenExpirationDate: Date?
 
-    //private let clientId = "3acdddba753b4ad58671235171d1996b"
-    private let clientId = "9d4c3e338f284a7593908efeee34eee2"
+    private let clientId = "3acdddba753b4ad58671235171d1996b"
+    //private let clientId = "9d4c3e338f284a7593908efeee34eee2"
     private let redirectURI = "soundswipe://callback"
     private let scopes = [
         "user-read-private",
