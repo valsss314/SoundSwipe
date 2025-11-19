@@ -27,7 +27,6 @@ class CustomRecommendationEngine: ObservableObject {
         // If filter is active, skip recommendations and do direct search
         if filter.isActive {
             print("🔍 Filter active - using direct search mode")
-            print("🔍 Filters: genres=\(filter.selectedGenres.count), years=\(filter.yearRange), popular=\(filter.includePopular), new=\(filter.includeNew), classics=\(filter.includeClassics)")
             return try await getFilteredSearchResults(limit: limit, filter: filter)
         }
 
@@ -87,7 +86,7 @@ class CustomRecommendationEngine: ObservableObject {
             if let artistName = try? await getArtistName(artistId: artistId) {
                 // Build query with year filter if specified
                 var query = "artist:\(artistName)"
-                if filter.yearRange != 2020...2024 {
+                if filter.yearRange != 2010...2024 {
                     query += " year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)"
                 }
 
@@ -119,7 +118,7 @@ class CustomRecommendationEngine: ObservableObject {
             ]
 
             // Apply year filter if specified
-            if filter.yearRange != 2020...2024 {
+            if filter.yearRange != 2010...2024 {
                 queries = queries.map { "\($0) year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)" }
             }
 
@@ -243,28 +242,9 @@ class CustomRecommendationEngine: ObservableObject {
         for genre in genres {
             var queries: [String] = []
 
-            // Build queries based on quick filter settings
-            if filter.includeNew {
-                // New releases: last 1-2 years of the range
-                let newYear = max(filter.yearRange.upperBound - 1, filter.yearRange.lowerBound)
-                queries.append("genre:\"\(genre)\" year:\(newYear)-\(filter.yearRange.upperBound)")
-            }
 
-            if filter.includeClassics {
-                // Classics: first 10 years of the range
-                let classicEnd = min(filter.yearRange.lowerBound + 10, filter.yearRange.upperBound)
-                queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(classicEnd)")
-            }
+            queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)")
 
-            if filter.includePopular {
-                // Popular tracks in the year range
-                queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)")
-            }
-
-            // If no quick filters are selected, just search by genre and year
-            if queries.isEmpty {
-                queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)")
-            }
 
             // Execute searches
             for query in queries {

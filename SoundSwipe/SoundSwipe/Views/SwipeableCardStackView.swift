@@ -166,6 +166,7 @@ struct SwipeableCardStackView: View {
                 }
 
                 // Test API Button (optional - can be removed in production)
+                /*
                 Button(action: {
                     showTestView = true
                 }) {
@@ -176,8 +177,9 @@ struct SwipeableCardStackView: View {
                 .sheet(isPresented: $showTestView) {
                     SpotifyTestView()
                 }
-            }
-        }
+                */
+             }
+         }
         .padding(.horizontal, 24)
         .padding(.top, 20)
     }

@@ -9,10 +9,11 @@ import SwiftUI
 
 struct MusicFilter: Codable {
     var selectedGenres: [String] = []
-    var yearRange: ClosedRange<Int> = 2020...2024
+    // Default year range now starts from 2010 for a wider discovery window
+    var yearRange: ClosedRange<Int> = 2010...2024
 
     var isActive: Bool {
-        !selectedGenres.isEmpty || yearRange != 2020...2024
+        !selectedGenres.isEmpty || yearRange != 2010...2024
     }
 }
 
@@ -147,7 +148,7 @@ struct FilterView: View {
                         get: { Double(tempFilter.yearRange.lowerBound) },
                         set: { tempFilter.yearRange = Int($0)...Int(tempFilter.yearRange.upperBound) }
                     ),
-                    in: 1960...2024,
+                    in: 2010...2024,
                     step: 1
                 )
                 .accentColor(.blue)
@@ -164,7 +165,7 @@ struct FilterView: View {
                         get: { Double(tempFilter.yearRange.upperBound) },
                         set: { tempFilter.yearRange = Int(tempFilter.yearRange.lowerBound)...Int($0) }
                     ),
-                    in: 1960...2024,
+                    in: 2010...2024,
                     step: 1
                 )
                 .accentColor(.blue)

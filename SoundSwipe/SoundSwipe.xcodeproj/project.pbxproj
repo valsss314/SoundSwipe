@@ -419,6 +419,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "SoundSwipe/Preview\\ Content SoundSwipe/Assets/Rokkitt";
+				DEVELOPMENT_TEAM = 8BDS2LMSLC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoundSwipe/Info.plist;
@@ -451,6 +452,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "SoundSwipe/Preview\\ Content SoundSwipe/Assets/Rokkitt";
+				DEVELOPMENT_TEAM = 8BDS2LMSLC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoundSwipe/Info.plist;
