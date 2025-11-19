@@ -10,12 +10,9 @@ import SwiftUI
 struct MusicFilter: Codable {
     var selectedGenres: [String] = []
     var yearRange: ClosedRange<Int> = 2020...2024
-    var includePopular: Bool = true
-    var includeNew: Bool = true
-    var includeClassics: Bool = false
 
     var isActive: Bool {
-        !selectedGenres.isEmpty || !includePopular || !includeNew || includeClassics || yearRange != 2020...2024
+        !selectedGenres.isEmpty || yearRange != 2020...2024
     }
 }
 
@@ -52,9 +49,6 @@ struct FilterView: View {
                         yearRangeSection
 
                         Divider().background(Color.white.opacity(0.2))
-
-                        // Quick Filters
-                        quickFiltersSection
 
                         // Apply Button
                         applyButton
@@ -174,45 +168,6 @@ struct FilterView: View {
                     step: 1
                 )
                 .accentColor(.blue)
-            }
-        }
-    }
-
-    private var quickFiltersSection: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            HStack {
-                Image(systemName: "bolt.fill")
-                    .foregroundColor(.yellow)
-                Text("Quick Filters")
-                    .font(.custom("Rokkitt-Regular", size: 22))
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white)
-            }
-
-            VStack(spacing: 12) {
-                FilterToggle(
-                    icon: "chart.line.uptrend.xyaxis",
-                    title: "Include Popular",
-                    description: "Show trending and popular tracks",
-                    isOn: $tempFilter.includePopular,
-                    color: .green
-                )
-
-                FilterToggle(
-                    icon: "sparkles",
-                    title: "Include New Releases",
-                    description: "Show recently released music",
-                    isOn: $tempFilter.includeNew,
-                    color: .blue
-                )
-
-                FilterToggle(
-                    icon: "music.note.house",
-                    title: "Include Classics",
-                    description: "Show older, timeless tracks",
-                    isOn: $tempFilter.includeClassics,
-                    color: .purple
-                )
             }
         }
     }
