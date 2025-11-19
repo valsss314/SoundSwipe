@@ -62,7 +62,7 @@ class SongViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        print("🎵 Loading recommendations using custom engine...")
+        print(" Loading recommendations using custom engine...")
 
         do {
             // Use custom recommendation engine with current filter
@@ -71,11 +71,11 @@ class SongViewModel: ObservableObject {
             let newSongs = tracks.map { $0.toSong() }
             songs.append(contentsOf: newSongs)
 
-            print("✅ Loaded \(newSongs.count) recommendations")
+            print(" Loaded \(newSongs.count) recommendations")
 
         } catch {
             errorMessage = "Failed to load recommendations: \(error.localizedDescription)"
-            print("❌ Error loading recommendations: \(error)")
+            print(" Error loading recommendations: \(error)")
 
             // Ultimate fallback: search for popular tracks
             do {
@@ -88,7 +88,7 @@ class SongViewModel: ObservableObject {
                 songs.append(contentsOf: newSongs)
 
             } catch {
-                print("❌ Fallback also failed: \(error)")
+                print(" Fallback also failed: \(error)")
             }
         }
 
@@ -106,12 +106,12 @@ class SongViewModel: ObservableObject {
         case .right:
             // User liked the song
             likedSongs.append(song)
-            print("💚 Liked: \(song.name) by \(song.artist)")
+            print(" Liked: \(song.name) by \(song.artist)")
 
         case .left:
             // User disliked the song
             dislikedSongs.append(song)
-            print("❌ Disliked: \(song.name) by \(song.artist)")
+            print(" Disliked: \(song.name) by \(song.artist)")
         }
 
         // Move to next song
@@ -156,7 +156,7 @@ class SongViewModel: ObservableObject {
     func loadPersonalizedRecommendations() async {
         // The custom engine already handles personalization based on user's data
         // So this just calls loadRecommendations which uses the engine
-        print("🎵 Loading personalized recommendations (via custom engine)...")
+        print(" Loading personalized recommendations (via custom engine)...")
         await loadRecommendations()
     }
 
