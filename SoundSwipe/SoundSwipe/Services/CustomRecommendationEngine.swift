@@ -56,11 +56,10 @@ class CustomRecommendationEngine: ObservableObject {
 
         // Strategy 4: Get trending tracks in user's favorite genres
         print(" Strategy 4: Trending in your genres")
-        if filter.includeNew || filter.includePopular {
-            if let trendingTracks = try? await getTrendingInUserGenres(limit: limit / 4, filter: filter) {
-                allTracks.append(contentsOf: trendingTracks)
-                print("    Got \(trendingTracks.count) trending tracks")
-            }
+        // Always attempt trending tracks as part of recommendations
+        if let trendingTracks = try? await getTrendingInUserGenres(limit: limit / 4, filter: filter) {
+            allTracks.append(contentsOf: trendingTracks)
+            print("    Got \(trendingTracks.count) trending tracks")
         }
         
         // Strategy 5: Match reccomended songs with the song analysis of liked songs
@@ -161,22 +160,7 @@ class CustomRecommendationEngine: ObservableObject {
             var queries: [String] = []
 
             // Build queries based on filter settings
-            if filter.includeNew {
-                queries.append("genre:\"\(genre)\" year:\(max(filter.yearRange.upperBound - 1, filter.yearRange.lowerBound))-\(filter.yearRange.upperBound)")
-            }
-
-            if filter.includeClassics {
-                queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(min(filter.yearRange.lowerBound + 10, filter.yearRange.upperBound))")
-            }
-
-            if filter.includePopular {
-                queries.append("\(genre) popular year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)")
-            }
-
-            // If no quick filters, use default year range
-            if queries.isEmpty {
-                queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)")
-            }
+            queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)")
 
             for query in queries {
                 if let genreTracks = try? await spotifyService.searchTracks(query: query, limit: limit / (genres.count * queries.count)) {
@@ -215,11 +199,7 @@ class CustomRecommendationEngine: ObservableObject {
             var query = "\(keyword)"
 
             // Apply year filter
-            if filter.includeNew {
-                query += " year:\(max(filter.yearRange.upperBound - 1, filter.yearRange.lowerBound))-\(filter.yearRange.upperBound)"
-            } else {
-                query += " year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)"
-            }
+            query += " year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)"
 
             if let trendingTracks = try? await spotifyService.searchTracks(query: query, limit: limit / 3) {
                 tracks.append(contentsOf: trendingTracks)
