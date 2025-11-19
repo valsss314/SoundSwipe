@@ -78,12 +78,81 @@ struct SongCardView: View {
             HStack(spacing: 12) {
                 // Album artwork
                 ZStack {
+                    // If a preloaded Image is passed in, use it. Otherwise attempt to load from song.albumArtworkURL.
                     if let artwork = albumArtwork {
                         artwork
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 65, height: 65)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
+                    } else if let artworkURL = song.albumArtworkURL,
+                              let url = URL(string: artworkURL) {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .empty:
+                                // placeholder while loading
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color.purple.opacity(0.7),
+                                                Color.blue.opacity(0.7)
+                                            ]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                    .frame(width: 65, height: 65)
+                                    .overlay(
+                                        Image(systemName: "music.note")
+                                            .font(.system(size: 26))
+                                            .foregroundColor(.white.opacity(0.8))
+                                    )
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 65, height: 65)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                            case .failure:
+                                // fallback placeholder on failure
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color.purple.opacity(0.7),
+                                                Color.blue.opacity(0.7)
+                                            ]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                    .frame(width: 65, height: 65)
+                                    .overlay(
+                                        Image(systemName: "music.note")
+                                            .font(.system(size: 26))
+                                            .foregroundColor(.white.opacity(0.8))
+                                    )
+                            @unknown default:
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [
+                                                Color.purple.opacity(0.7),
+                                                Color.blue.opacity(0.7)
+                                            ]),
+                                            startPoint: .topLeading,
+                                            endPoint: .bottomTrailing
+                                        )
+                                    )
+                                    .frame(width: 65, height: 65)
+                                    .overlay(
+                                        Image(systemName: "music.note")
+                                            .font(.system(size: 26))
+                                            .foregroundColor(.white.opacity(0.8))
+                                    )
+                            }
+                        }
                     } else {
                         // Gradient placeholder
                         RoundedRectangle(cornerRadius: 10)

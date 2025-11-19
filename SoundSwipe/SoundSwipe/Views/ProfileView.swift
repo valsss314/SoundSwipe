@@ -219,8 +219,30 @@ struct ProfileView: View {
 
                     ForEach(viewModel.likedSongs.suffix(3)) { song in
                         HStack {
-                            Image(systemName: "music.note")
-                                .foregroundColor(.green)
+                            if let artworkURL = song.albumArtworkURL, let url = URL(string: artworkURL) {
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 44, height: 44)
+                                            .clipShape(RoundedRectangle(cornerRadius: 6))
+                                    default:
+                                        RoundedRectangle(cornerRadius: 6)
+                                            .fill(Color.green.opacity(0.4))
+                                            .frame(width: 44, height: 44)
+                                            .overlay(
+                                                Image(systemName: "music.note")
+                                                    .foregroundColor(.white)
+                                            )
+                                    }
+                                }
+                            } else {
+                                Image(systemName: "music.note")
+                                    .foregroundColor(.green)
+                                    .frame(width: 44, height: 44)
+                            }
 
                             VStack(alignment: .leading) {
                                 Text(song.name)
