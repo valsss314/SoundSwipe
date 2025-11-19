@@ -148,7 +148,7 @@ struct FilterView: View {
                         get: { Double(tempFilter.yearRange.lowerBound) },
                         set: { tempFilter.yearRange = Int($0)...Int(tempFilter.yearRange.upperBound) }
                     ),
-                    in: 2010...2024,
+                    in: 1960...2024,
                     step: 1
                 )
                 .accentColor(.blue)
@@ -165,7 +165,7 @@ struct FilterView: View {
                         get: { Double(tempFilter.yearRange.upperBound) },
                         set: { tempFilter.yearRange = Int(tempFilter.yearRange.lowerBound)...Int($0) }
                     ),
-                    in: 2010...2024,
+                    in: 1960...2024,
                     step: 1
                 )
                 .accentColor(.blue)
