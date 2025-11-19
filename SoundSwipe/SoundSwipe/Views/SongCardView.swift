@@ -68,7 +68,7 @@ struct ScrollingText: View {
 
 struct SongCardView: View {
     let song: Song
-    var albumArtwork: Image?
+    var albumArtwork: Image? = nil
 
     var body: some View {
         ZStack {

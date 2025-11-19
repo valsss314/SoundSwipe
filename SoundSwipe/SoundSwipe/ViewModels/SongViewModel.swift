@@ -154,8 +154,11 @@ class SongViewModel: ObservableObject {
 
     // MARK: - Get Personalized Recommendations (Same as regular now - uses custom engine)
     func loadPersonalizedRecommendations() async {
-        // The custom engine already handles personalization based on user's data
-        // So this just calls loadRecommendations which uses the engine
+        // Clear existing songs and reset index when loading personalized/filtered recommendations
+        // This ensures old results don't mix with new filtered results
+        songs.removeAll()
+        currentIndex = 0
+
         print(" Loading personalized recommendations (via custom engine)...")
         await loadRecommendations()
     }

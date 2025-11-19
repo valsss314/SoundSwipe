@@ -7,8 +7,8 @@ enum SwipeDirection {
 
 struct SwipeableSongCardView: View {
     let song: Song
-    var albumArtwork: Image?
-    var onSwipe: ((SwipeDirection) -> Void)?
+    var albumArtwork: Image? = nil
+    var onSwipe: ((SwipeDirection) -> Void)? = nil
 
     @ObservedObject var audioManager: AudioPlayerManager
     @Environment(\.openURL) private var openURL

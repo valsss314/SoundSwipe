@@ -23,8 +23,12 @@ class CustomRecommendationEngine: ObservableObject {
         }
 
         print(" Starting custom recommendation engine...")
+
+        // If filter is active, skip recommendations and do direct search
         if filter.isActive {
-            print("🔍 Active filters: genres=\(filter.selectedGenres.count), years=\(filter.yearRange), popular=\(filter.includePopular), new=\(filter.includeNew), classics=\(filter.includeClassics)")
+            print("🔍 Filter active - using direct search mode")
+            print("🔍 Filters: genres=\(filter.selectedGenres.count), years=\(filter.yearRange), popular=\(filter.includePopular), new=\(filter.includeNew), classics=\(filter.includeClassics)")
+            return try await getFilteredSearchResults(limit: limit, filter: filter)
         }
 
         var allTracks: [SpotifyTrack] = []
@@ -239,6 +243,64 @@ class CustomRecommendationEngine: ObservableObject {
         }
 
         return Array(tracks.shuffled().prefix(limit))
+    }
+
+    // MARK: - Direct Search Mode (when filters are active)
+    private func getFilteredSearchResults(limit: Int, filter: MusicFilter) async throws -> [SpotifyTrack] {
+        var tracks: [SpotifyTrack] = []
+
+        // Determine which genres to search
+        let genres: [String]
+        if filter.selectedGenres.isEmpty {
+            // No specific genres selected, search across popular genres
+            genres = ["pop", "rock", "indie", "hip-hop", "electronic"]
+        } else {
+            genres = filter.selectedGenres
+        }
+
+        let tracksPerGenre = max(limit / genres.count, 5)
+
+        for genre in genres {
+            var queries: [String] = []
+
+            // Build queries based on quick filter settings
+            if filter.includeNew {
+                // New releases: last 1-2 years of the range
+                let newYear = max(filter.yearRange.upperBound - 1, filter.yearRange.lowerBound)
+                queries.append("genre:\"\(genre)\" year:\(newYear)-\(filter.yearRange.upperBound)")
+            }
+
+            if filter.includeClassics {
+                // Classics: first 10 years of the range
+                let classicEnd = min(filter.yearRange.lowerBound + 10, filter.yearRange.upperBound)
+                queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(classicEnd)")
+            }
+
+            if filter.includePopular {
+                // Popular tracks in the year range
+                queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)")
+            }
+
+            // If no quick filters are selected, just search by genre and year
+            if queries.isEmpty {
+                queries.append("genre:\"\(genre)\" year:\(filter.yearRange.lowerBound)-\(filter.yearRange.upperBound)")
+            }
+
+            // Execute searches
+            for query in queries {
+                let queryLimit = tracksPerGenre / queries.count
+                if let searchResults = try? await spotifyService.searchTracks(query: query, limit: max(queryLimit, 3)) {
+                    tracks.append(contentsOf: searchResults)
+                    print("    Search '\(query)' returned \(searchResults.count) tracks")
+                }
+            }
+        }
+
+        // Filter and deduplicate
+        let uniqueTracks = filterAndDeduplicate(tracks: tracks)
+
+        // Shuffle and return
+        return Array(uniqueTracks.shuffled().prefix(limit))
     }
 
     // MARK: - Helper Functions

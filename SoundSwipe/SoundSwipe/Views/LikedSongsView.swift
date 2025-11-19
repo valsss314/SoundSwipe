@@ -78,10 +78,7 @@ struct LikedSongsView: View {
                     ScrollView {
                         LazyVStack(spacing: 12) {
                             ForEach(filteredSongs) { song in
-                                SongCardView(
-                                    song: song,
-                                    albumArtwork: nil
-                                )
+                                SongCardView(song: song)
                                 .padding(.horizontal)
                             }
                         }
